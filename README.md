@@ -21,13 +21,10 @@ Maven 3.2+
 如何啟動
 複製專案：
 
-Bash
 
 git clone [你的專案 URL]
 cd [你的專案資料夾]
 啟動應用程式：
-
-Bash
 
 ./mvnw spring-boot:run
 應用程式啟動後，你可以在 http://localhost:8080 存取 API。
@@ -103,8 +100,5 @@ JSON
 
 測試
 專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。你可以運行以下 Maven 指令來執行所有測試：
-
-Bash
-
-
 ./mvnw test
+
