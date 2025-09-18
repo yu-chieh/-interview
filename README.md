@@ -1,5 +1,7 @@
-專案簡介
+#專案簡介
+
 這是FOR 面試用的考題答案
+
 一個基於 Spring Boot 的 RESTful API 專案，主要功能是提供加密貨幣與法幣的匯率資訊。專案會定期從 CoinDesk API 取得最新匯率，並將其儲存在資料庫中。同時，它也提供了標準的 CRUD (Create, Read, Update, Delete) 功能，讓使用者可以手動管理匯率資料。
 
 技術棧
@@ -105,6 +107,7 @@ JSON
 測試
 專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。你可以運行以下 Maven 指令來執行所有測試：
 ./mvnw test
+
 
 
 
