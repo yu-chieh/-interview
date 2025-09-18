@@ -92,7 +92,7 @@ class ExchangeRateRestControllerTest {
 		String testCurrencyCode = "test_TWD";
 		ExchangeRateEntity rateToDelete = new ExchangeRateEntity(testCurrencyCode, "新台幣", 30.0, LocalDateTime.now());
 
-		// 模擬行為：existsById() 回傳 true
+		// 模擬existsById() 回傳 true
 		when(exchangeRateRepository.existsById(testCurrencyCode)).thenReturn(true);
 
 		mockMvc.perform(delete("/api/exchangeRate").contentType(MediaType.APPLICATION_JSON)
@@ -106,11 +106,9 @@ class ExchangeRateRestControllerTest {
 		ExchangeRateEntity mockRate2 = new ExchangeRateEntity("EUR", "歐元", 35.0, LocalDateTime.now());
 		Flux<ExchangeRateEntity> mockResponse = Flux.just(mockRate1, mockRate2);
 
-		// 1. 模擬 apiService.getExchangeRatesAndUpdateTime() 的行為 (回傳 Flux)
+		// 1. 模擬 apiService.getExchangeRatesAndUpdateTime() 
 		when(apiService.getExchangeRatesAndUpdateTime()).thenReturn(mockResponse);
 
-		// 2. 修正這裡的then()方法，讓 saveAll() 回傳一個空的 List
-		// 因為在你的服務層中，Mono.fromCallable 最終會收到這個 List
 		when(exchangeRateRepository.saveAll(anyList())).thenReturn(Collections.emptyList());
 
 		// 執行 API 呼叫

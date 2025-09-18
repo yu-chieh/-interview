@@ -1,93 +1,108 @@
-# interview
+專案簡介
+這是一個基於 Spring Boot 的 RESTful API 專案，主要功能是提供加密貨幣與法幣的匯率資訊。專案會定期從 CoinDesk API 取得最新匯率，並將其儲存在資料庫中。同時，它也提供了標準的 CRUD (Create, Read, Update, Delete) 功能，讓使用者可以手動管理匯率資料。
 
+技術棧
+後端框架: Spring Boot
 
+資料庫: H2 Database (內嵌式資料庫)
 
-## Getting started
+API 呼叫: WebClient (Spring WebFlux)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+測試框架: JUnit 5, Mockito
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+依賴管理: Maven
 
-## Add your files
+環境要求
+Java 8 或更高版本
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+Maven 3.2+
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/p5516929/interview.git
-git branch -M main
-git push -uf origin main
-```
+如何啟動
+複製專案：
 
-## Integrate with your tools
+Bash
 
-- [ ] [Set up project integrations](https://gitlab.com/p5516929/interview/-/settings/integrations)
+git clone [你的專案 URL]
+cd [你的專案資料夾]
+啟動應用程式：
 
-## Collaborate with your team
+Bash
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+./mvnw spring-boot:run
+應用程式啟動後，你可以在 http://localhost:8080 存取 API。
 
-## Test and Deploy
+API 端點說明
+專案提供以下 RESTful API：
 
-Use the built-in continuous integration in GitLab.
+1. 取得所有匯率資料
+端點: GET /api/exchangeRate
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+說明: 查詢資料庫中所有儲存的匯率資料。
 
-***
+回應範例:
 
-# Editing this README
+JSON
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+{
+  "code": 200,
+  "message": "Success",
+  "data": [
+    {
+      "currency_code": "USD",
+      "currency_name": "美元",
+      "rate": 30.5,
+      "updated_time": "2025-09-18T10:00:00"
+    }
+  ]
+}
+2. 新增一筆匯率資料
+端點: POST /api/exchangeRate
 
-## Suggestions for a good README
+說明: 新增一筆自訂的匯率資料。如果 currency_code 已存在，會拋出 DuplicateEntryException。
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+請求範例:
 
-## Name
-Choose a self-explaining name for your project.
+JSON
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+{
+  "currency_code": "test_TWD",
+  "currency_name": "新台幣",
+  "rate": 30.0
+}
+3. 更新一筆匯率資料
+端點: PUT /api/exchangeRate
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+說明: 更新一筆現有的匯率資料。如果 currency_code 不存在，會拋出 DataNotFindException。
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+請求範例:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+JSON
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+{
+  "currency_code": "USD",
+  "currency_name": "美元 (更新)",
+  "rate": 31.0
+}
+4. 刪除一筆匯率資料
+端點: DELETE /api/exchangeRate
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+說明: 刪除指定 currency_code 的匯率資料。如果 currency_code 不存在，會拋出 DataNotFindException。
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+請求範例:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+JSON
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+{
+  "currency_code": "USD"
+}
+5. 呼叫 CoinDesk API 更新資料
+端點: GET /api/exchangeRate/reflashExchangeRate
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+說明: 呼叫外部 CoinDesk API，取得最新匯率並更新至資料庫。
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+測試
+專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。你可以運行以下 Maven 指令來執行所有測試：
 
-## License
-For open source projects, say how it is licensed.
+Bash
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+./mvnw test
