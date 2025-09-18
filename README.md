@@ -53,6 +53,7 @@ JSON
     }
   ]
 }
+
 2. 新增一筆匯率資料
 端點: POST /api/exchangeRate
 
@@ -67,6 +68,7 @@ JSON
   "currency_name": "新台幣",
   "rate": 30.0
 }
+
 3. 更新一筆匯率資料
 端點: PUT /api/exchangeRate
 
@@ -81,6 +83,7 @@ JSON
   "currency_name": "美元 (更新)",
   "rate": 31.0
 }
+
 4. 刪除一筆匯率資料
 端點: DELETE /api/exchangeRate
 
@@ -93,6 +96,7 @@ JSON
 {
   "currency_code": "USD"
 }
+
 5. 呼叫 CoinDesk API 更新資料
 端點: GET /api/exchangeRate/reflashExchangeRate
 
@@ -101,4 +105,5 @@ JSON
 測試
 專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。你可以運行以下 Maven 指令來執行所有測試：
 ./mvnw test
+
 
