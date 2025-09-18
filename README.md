@@ -105,8 +105,8 @@ JSON
 說明: 呼叫外部 CoinDesk API，取得最新匯率並更新至資料庫。
 
 測試
-專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。你可以運行以下 Maven 指令來執行所有測試：
-./mvnw test
+專案使用 JUnit 5 和 Mockito 進行單元測試和整合測試。
+
 
 
 
